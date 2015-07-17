@@ -488,6 +488,7 @@ static int register_nasgpio_led(int led_nr)
 	led->brightness_set = nasgpio_led_set_brightness;
 	led->blink_set = nasgpio_led_set_blink;
 	led->groups = nasgpio_led_groups;
+	led->flags |= LED_BRIGHTNESS_FAST;
 	ret = led_classdev_register(&nas_gpio_pci_dev->dev, led);
 	if (ret)
 		return ret;
