@@ -45,14 +45,14 @@ static struct led_classdev hp6xx_red_led = {
 	.name			= "hp6xx:red",
 	.default_trigger	= "hp6xx-charge",
 	.brightness_set		= hp6xxled_red_set,
-	.flags			= LED_CORE_SUSPENDRESUME,
+	.flags			= LED_CORE_SUSPENDRESUME | LED_BRIGHTNESS_FAST,
 };
 
 static struct led_classdev hp6xx_green_led = {
 	.name			= "hp6xx:green",
 	.default_trigger	= "ide-disk",
 	.brightness_set		= hp6xxled_green_set,
-	.flags			= LED_CORE_SUSPENDRESUME,
+	.flags			= LED_CORE_SUSPENDRESUME | LED_BRIGHTNESS_FAST,
 };
 
 static int hp6xxled_probe(struct platform_device *pdev)
