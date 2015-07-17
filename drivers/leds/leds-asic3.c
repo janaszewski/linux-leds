@@ -112,6 +112,7 @@ static int asic3_led_probe(struct platform_device *pdev)
 	led->cdev->brightness_set = brightness_set;
 	led->cdev->blink_set = blink_set;
 	led->cdev->default_trigger = led->default_trigger;
+	led->cdev->flags |= LED_BRIGHTNESS_FAST;
 
 	ret = led_classdev_register(&pdev->dev, led->cdev);
 	if (ret < 0)
