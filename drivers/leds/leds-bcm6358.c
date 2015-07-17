@@ -145,6 +145,7 @@ static int bcm6358_led(struct device *dev, struct device_node *nc, u32 reg,
 	spin_unlock_irqrestore(lock, flags);
 
 	led->cdev.brightness_set = bcm6358_led_set;
+	led->cdev.flags |= LED_BRIGHTNESS_FAST;
 
 	rc = led_classdev_register(dev, &led->cdev);
 	if (rc < 0)
