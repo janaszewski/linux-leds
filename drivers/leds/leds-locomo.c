@@ -47,12 +47,14 @@ static struct led_classdev locomo_led0 = {
 	.name			= "locomo:amber:charge",
 	.default_trigger	= "main-battery-charging",
 	.brightness_set		= locomoled_brightness_set0,
+	.flags			= LED_BRIGHTESS_FAST,
 };
 
 static struct led_classdev locomo_led1 = {
 	.name			= "locomo:green:mail",
 	.default_trigger	= "nand-disk",
 	.brightness_set		= locomoled_brightness_set1,
+	.flags			= LED_BRIGHTESS_FAST,
 };
 
 static int locomoled_probe(struct locomo_dev *ldev)
