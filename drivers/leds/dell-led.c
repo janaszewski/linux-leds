@@ -320,7 +320,7 @@ static struct led_classdev dell_led = {
 	.max_brightness = 1,
 	.brightness_set = dell_led_set,
 	.blink_set	= dell_led_blink,
-	.flags		= LED_CORE_SUSPENDRESUME,
+	.flags		= LED_CORE_SUSPENDRESUME | LED_BRIGHTNESS_FAST,
 };
 
 static int __init dell_led_init(void)
