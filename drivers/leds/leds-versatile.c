@@ -85,6 +85,7 @@ static int versatile_leds_probe(struct platform_device *dev)
 		led->cdev.brightness_set = versatile_led_set;
 		led->cdev.brightness_get = versatile_led_get;
 		led->cdev.default_trigger = versatile_leds[i].trigger;
+		led->cdev.flags |= LED_BRIGHTNESS_FAST;
 		led->mask = BIT(i);
 
 		if (led_classdev_register(NULL, &led->cdev) < 0) {
