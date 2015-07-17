@@ -35,6 +35,7 @@ static struct led_classdev rb532_uled = {
 	.brightness_set = rb532_led_set,
 	.brightness_get = rb532_led_get,
 	.default_trigger = "nand-disk",
+	.flags		= LED_BRIGHTNESS_FAST,
 };
 
 static int rb532_led_probe(struct platform_device *pdev)
