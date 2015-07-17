@@ -123,6 +123,7 @@ static int ot200_led_probe(struct platform_device *pdev)
 
 		leds[i].cdev.name = leds[i].name;
 		leds[i].cdev.brightness_set = ot200_led_brightness_set;
+		leds[i].cdev.flags |= LED_BRIGHTNESS_FAST;
 
 		ret = led_classdev_register(&pdev->dev, &leds[i].cdev);
 		if (ret < 0)
