@@ -146,6 +146,7 @@ static int sunfire_led_generic_probe(struct platform_device *pdev,
 		lp->brightness = LED_FULL;
 		lp->brightness_set = types[i].handler;
 		lp->default_trigger = types[i].default_trigger;
+		lp->flags |= LED_BRIGHTNESS_FAST;
 
 		err = led_classdev_register(&pdev->dev, lp);
 		if (err) {
