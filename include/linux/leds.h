@@ -53,6 +53,9 @@ struct led_classdev {
 	/* Must not sleep, use a workqueue if needed */
 	void		(*brightness_set)(struct led_classdev *led_cdev,
 					  enum led_brightness brightness);
+	/* Intended for drivers that set brightness in a non-blocking way */
+	int (*brightness_set_nonblocking)(struct led_classdev *led_cdev,
+					  enum led_brightness brightness);
 	/*
 	 * Set LED brightness level immediately - it can block the caller for
 	 * the time required for accessing a LED device register.
