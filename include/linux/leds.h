@@ -45,11 +45,9 @@ struct led_classdev {
 #define LED_BLINK_ONESHOT_STOP	(1 << 18)
 #define LED_BLINK_INVERT	(1 << 19)
 #define LED_SYSFS_DISABLE	(1 << 20)
-#define SET_BRIGHTNESS_ASYNC	(1 << 21)
-#define SET_BRIGHTNESS_SYNC	(1 << 22)
-#define LED_DEV_CAP_FLASH	(1 << 23)
-#define LED_BRIGHTNESS_BLOCKING	(1 << 24)
-#define LED_BLINK_DISABLE	(1 << 25)
+#define LED_DEV_CAP_FLASH	(1 << 21)
+#define LED_BRIGHTNESS_BLOCKING	(1 << 22)
+#define LED_BLINK_DISABLE	(1 << 23)
 
 	/* Set LED brightness level */
 	/* Intended for drivers that may set brightness in a blocking way. */
@@ -58,12 +56,6 @@ struct led_classdev {
 	/* Intended for drivers that set brightness in a non-blocking way */
 	int (*brightness_set_nonblocking)(struct led_classdev *led_cdev,
 					  enum led_brightness brightness);
-	/*
-	 * Set LED brightness level immediately - it can block the caller for
-	 * the time required for accessing a LED device register.
-	 */
-	int		(*brightness_set_sync)(struct led_classdev *led_cdev,
-					enum led_brightness brightness);
 	/* Get LED brightness level */
 	enum led_brightness (*brightness_get)(struct led_classdev *led_cdev);
 
@@ -162,7 +154,7 @@ extern void led_blink_set_oneshot(struct led_classdev *led_cdev,
  *
  * Set an LED's brightness, and, if necessary, cancel the
  * software blink timer that implements blinking when the
- * hardware doesn't.
+ * hardware doesn't. This function is guaranteed not to sleep.
  */
 extern void led_set_brightness(struct led_classdev *led_cdev,
 			       enum led_brightness brightness);

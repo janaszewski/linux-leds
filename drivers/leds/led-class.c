@@ -285,8 +285,6 @@ int led_classdev_register(struct device *parent, struct led_classdev *led_cdev)
 	WARN_ON((led_cdev->flags & LED_BRIGHTNESS_BLOCKING) &&
 		!led_cdev->brightness_set);
 
-	led_cdev->flags |= SET_BRIGHTNESS_ASYNC;
-
 	led_update_brightness(led_cdev);
 
 	INIT_WORK(&led_cdev->set_brightness_work, set_brightness_delayed);
