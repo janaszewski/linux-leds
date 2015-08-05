@@ -279,6 +279,9 @@ int led_classdev_register(struct device *parent, struct led_classdev *led_cdev)
 	if (!led_cdev->max_brightness)
 		led_cdev->max_brightness = LED_FULL;
 
+	WARN_ON((led_cdev->flags & LED_BRIGHTNESS_BLOCKING) &&
+		!led_cdev->brightness_set);
+
 	led_cdev->flags |= SET_BRIGHTNESS_ASYNC;
 
 	led_update_brightness(led_cdev);
