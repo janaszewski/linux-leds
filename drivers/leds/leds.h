@@ -17,13 +17,25 @@
 #include <linux/leds.h>
 
 static inline void led_set_brightness_async(struct led_classdev *led_cdev,
-					enum led_brightness value)
+					    enum led_brightness value)
 {
-	value = min(value, led_cdev->max_brightness);
-	led_cdev->brightness = value;
+	int ret;
+	/*
+	 * Drivers that implement brightness_set op in the old manner also
+	 * don't set LED_BRIGHTNESS_BLOCKING flag. They use work queue
+	 * internally in case they set brightness in a blocking way, thus we
+	 * avoid scheduling another work queue task by the LED core.
+	 */
+	if (led_cdev->brightness_set &&
+	   !(led_cdev->flags & LED_BRIGHTNESS_BLOCKING)) {
+		ret = led_set_brightness_sync(led_cdev, value);
+		if (ret < 0)
+			dev_err(led_cdev->dev, "cannot set led brightness %d\n", ret);
+		return;
+	}
 
-	if (!(led_cdev->flags & LED_SUSPENDED))
-		led_cdev->brightness_set(led_cdev, value);
+	led_cdev->delayed_set_value = value;
+	schedule_work(&led_cdev->set_brightness_work);
 }
 
 static inline int led_get_brightness(struct led_classdev *led_cdev)
