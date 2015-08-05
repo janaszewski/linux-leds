@@ -141,6 +141,31 @@ void led_set_brightness(struct led_classdev *led_cdev,
 }
 EXPORT_SYMBOL(led_set_brightness);
 
+int led_set_brightness_sync(struct led_classdev *led_cdev,
+			    enum led_brightness value)
+{
+	int ret = 0;
+
+	led_cdev->brightness = min(value, led_cdev->max_brightness);
+
+	if (led_cdev->flags & LED_SUSPENDED)
+		return 0;
+
+	if (led_cdev->brightness_set_sync)
+		ret = led_cdev->brightness_set_sync(led_cdev,
+							led_cdev->brightness);
+	else if (led_cdev->brightness_set_nonblocking)
+		ret = led_cdev->brightness_set_nonblocking(led_cdev,
+							led_cdev->brightness);
+	else if (led_cdev->brightness_set)
+		led_cdev->brightness_set(led_cdev, led_cdev->brightness);
+	else
+		ret = -EINVAL;
+
+	return ret;
+}
+EXPORT_SYMBOL(led_set_brightness_sync);
+
 int led_update_brightness(struct led_classdev *led_cdev)
 {
 	int ret = 0;
