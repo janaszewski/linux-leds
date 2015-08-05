@@ -52,7 +52,7 @@ struct led_classdev {
 #define LED_BLINK_DISABLE	(1 << 25)
 
 	/* Set LED brightness level */
-	/* Must not sleep, use a workqueue if needed */
+	/* Intended for drivers that may set brightness in a blocking way. */
 	void		(*brightness_set)(struct led_classdev *led_cdev,
 					  enum led_brightness brightness);
 	/* Intended for drivers that set brightness in a non-blocking way */

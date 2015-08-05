@@ -2,8 +2,10 @@
  * LED Core
  *
  * Copyright 2005 Openedhand Ltd.
+ * Copyright 2014, 2015 Samsung Electronics Co., Ltd.
  *
  * Author: Richard Purdie <rpurdie@openedhand.com>
+ * Author: Jacek Anaszewski <j.anaszewski@samsung.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -36,6 +38,25 @@ static inline void led_set_brightness_async(struct led_classdev *led_cdev,
 
 	led_cdev->delayed_set_value = value;
 	schedule_work(&led_cdev->set_brightness_work);
+}
+
+static inline void led_set_brightness_nosleep(struct led_classdev *led_cdev,
+					      enum led_brightness value)
+{
+	int ret;
+
+	/*
+	 * Drivers that implement brightness_set_nonblocking op are guaranteed
+	 * not to sleep while setting brightness.
+	 */
+	if (led_cdev->brightness_set_nonblocking) {
+		ret = led_set_brightness_sync(led_cdev, value);
+		if (ret < 0)
+			dev_err(led_cdev->dev, "cannot set led brightness %d\n", ret);
+		return;
+	}
+
+	led_set_brightness_async(led_cdev, value);
 }
 
 static inline int led_get_brightness(struct led_classdev *led_cdev)
