@@ -37,6 +37,23 @@ The underlying design philosophy is simplicity. LEDs are simple devices
 and the aim is to keep a small amount of code giving as much functionality
 as possible.  Please keep this in mind when suggesting enhancements.
 
+LED subsystem exposes two ops for setting brightness and only one of them
+should be implemented by the drivers, depending on whether they set brightness
+in a blocking way or not:
+
+    - brightness_set : Intended for drivers that may set brightness in
+                       a blocking way. Since for a long time this was the only
+                       op exposed by the LED subsystem and it was drivers'
+                       responsibility to assure that it will not block the
+                       caller, now new drivers are required to set
+                       LED_BRIGHTNESS_BLOCKING flag when using this op for the
+                       LED core to be aware that it should delegate it to the
+                       work queue task unless synchronous operation wasn't
+                       explicitly requested with led_set_brightness_sync API.
+
+    - brightness_set_nonblocking : Intended for drivers that set brightness in
+                                   a non-blocking way.
+
 
 LED Device Naming
 =================
