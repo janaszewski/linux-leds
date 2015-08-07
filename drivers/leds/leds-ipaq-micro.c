@@ -104,7 +104,7 @@ static struct led_classdev micro_led = {
 	.name			= "led-ipaq-micro",
 	.brightness_set		= micro_leds_brightness_set,
 	.blink_set		= micro_leds_blink_set,
-	.flags			= LED_CORE_SUSPENDRESUME,
+	.flags			= LED_CORE_SUSPENDRESUME | LED_BRIGHTNESS_BLOCKING,
 };
 
 static int micro_leds_probe(struct platform_device *pdev)
